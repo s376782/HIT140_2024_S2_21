@@ -1,0 +1,29 @@
+from A2 import *
+
+def utest(df1, df2, field, use_continuity=True, alternative='two-sided'):
+    import scipy.stats as st
+
+    sample1 = df1[field].to_numpy()
+    sample2 = df2[field].to_numpy()
+
+    # perform two-sample Mann-Whitney U test
+    u_stats, p_val = st.mannwhitneyu(
+        sample1, sample2,
+        use_continuity, alternative
+    )
+
+    return u_stats, p_val
+
+dfs = {
+    'df_high_st <> df_low_st': (df_high_st, df_low_st),
+    'df_g1 <> df_g0': (df_g1, df_g0),
+    'df_d1 <> df_d0': (df_d1, df_d0),
+    'df_m1 <> df_m0': (df_m1, df_m0)
+}
+
+for name, d in dfs.items():
+    print(f'==================================================')
+    for field in wellbeing_fields:
+        u_stats, p_val = utest(d[0], d[1], field)
+        print(f'`{name}` field `{field}`: Stats: {u_stats:.3f}, PValue: {p_val:.3f}')
+    
