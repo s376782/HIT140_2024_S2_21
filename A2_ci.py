@@ -1,4 +1,4 @@
-from A2 import *
+from A2_datawrangling import *
 
 def calculate_ci(col: pd.Series, confidence: float = 0.95):
     import statsmodels.stats.weightstats as stm
