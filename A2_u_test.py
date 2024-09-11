@@ -1,4 +1,5 @@
-from A2 import *
+# Import clean data from A2 file
+from A2_datawrangling import *
 
 def utest(df1, df2, field, use_continuity=True, alternative='two-sided'):
     import scipy.stats as st
@@ -15,15 +16,16 @@ def utest(df1, df2, field, use_continuity=True, alternative='two-sided'):
     return u_stats, p_val
 
 dfs = {
-    'df_high_st <> df_low_st': (df_high_st, df_low_st),
-    'df_g1 <> df_g0': (df_g1, df_g0),
-    'df_d1 <> df_d0': (df_d1, df_d0),
-    'df_m1 <> df_m0': (df_m1, df_m0)
+    'df_high_st & df_low_st': (df_high_st, df_low_st),
+    'df_g1 & df_g0': (df_g1, df_g0),
+    'df_d1 & df_d0': (df_d1, df_d0),
+    'df_m1 & df_m0': (df_m1, df_m0)
 }
 
-for name, d in dfs.items():
-    print(f'==================================================')
-    for field in wellbeing_fields:
-        u_stats, p_val = utest(d[0], d[1], field)
-        print(f'`{name}` field `{field}`: Stats: {u_stats:.3f}, PValue: {p_val:.3f}')
+for alternative in ['two-sided', 'less', 'greater']:
+    for name, d in dfs.items():
+        print(f'==================================================')
+        for field in wellbeing_fields:
+            u_stats, p_val = utest(d[0], d[1], field, alternative=alternative)
+            print(f'({alternative}) Mann-Whitney U test for `{name}` - field `{field}`: Stats: {u_stats:.4f}, PValue: {p_val:.4f}')
     
