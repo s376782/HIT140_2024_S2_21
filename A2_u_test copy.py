@@ -5,6 +5,7 @@ def utest(df1, df2, field, use_continuity=True, alternative='two-sided'):
     import scipy.stats as st
 
     sample1 = df1[field].to_numpy()
+    sample2 = df2[field].to_numpy()
 
     # perform two-sample Mann-Whitney U test
     u_stats, p_val = st.mannwhitneyu(
