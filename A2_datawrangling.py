@@ -21,19 +21,6 @@ df3['wellbeing-score'] = df3[wellbeing_fields].sum(axis=1)
 # Create new dataframe for all data by joining 3 datasets
 df = df3.join(df2, how='inner').join(df1, how='inner')
 
-# Create new dataframe follow condition of groups
-# Gender groups
-df_g0 = df.loc[df['gender'] == 0] #group for otherwise gender
-df_g1 = df.loc[df['gender'] == 1] #group for male
-
-# Minority group
-df_m0 = df.loc[df['minority'] == 0] #group for the majority ethnic group of the country
-df_m1 = df.loc[df['minority'] == 1] #group for otherwise minority group
-
-# Deprivation group
-df_d1 = df.loc[df['deprived'] == 1] #group with high deprivation indices with high scores on unemployment, crime, poor public services, and barriers to housing
-df_d0 = df.loc[df['deprived'] == 0] #group for otherwise
-
 # Compute quartile1(25%) and quartile3(75%) for total screening time per week
 total_q1, total_q3 = np.percentile(df['total'].to_numpy(), [25, 75])
 
@@ -47,3 +34,22 @@ higher_fence = total_q3 + (1.5*total_iqr) #Compute higher_fence
 df_low_st = df.loc[df['total'] < total_q1].loc[df['total'] > lower_fence]
 # High screening time group: include all people have total screening time per week higher than value of higher fence
 df_high_st = df.loc[df['total'] > total_q3].loc[df['total'] < higher_fence]
+
+# Create new dataframe follow condition of groups
+# Gender groups
+df_g0 = df.loc[df['gender'] == 0] #group for otherwise gender
+df_g1 = df.loc[df['gender'] == 1] #group for male
+df_g0_wo_outliers = df_g0.loc[df_g0['total'] > lower_fence].loc[df_g0['total'] < higher_fence]
+df_g1_wo_outliers = df_g1.loc[df_g1['total'] > lower_fence].loc[df_g1['total'] < higher_fence]
+
+# Minority group
+df_m0 = df.loc[df['minority'] == 0] #group for the majority ethnic group of the country
+df_m1 = df.loc[df['minority'] == 1] #group for otherwise minority group
+df_m0_wo_outliers = df_m0.loc[df_m0['total'] > lower_fence].loc[df_m0['total'] < higher_fence]
+df_m1_wo_outliers = df_m1.loc[df_m1['total'] > lower_fence].loc[df_m1['total'] < higher_fence]
+
+# Deprivation group
+df_d1 = df.loc[df['deprived'] == 1] #group with high deprivation indices with high scores on unemployment, crime, poor public services, and barriers to housing
+df_d0 = df.loc[df['deprived'] == 0] #group for otherwise
+df_d0_wo_outliers = df_d0.loc[df_d0['total'] > lower_fence].loc[df_d0['total'] < higher_fence]
+df_d1_wo_outliers = df_d1.loc[df_d1['total'] > lower_fence].loc[df_d1['total'] < higher_fence]

@@ -17,9 +17,9 @@ def utest(df1, df2, field, use_continuity=True, alternative='two-sided'):
 
 dfs = {
     'df_high_st & df_low_st': (df_high_st, df_low_st),
-    'df_g1 & df_g0': (df_g1, df_g0),
-    'df_d1 & df_d0': (df_d1, df_d0),
-    'df_m1 & df_m0': (df_m1, df_m0)
+    'df_g1 & df_g0': (df_g1_wo_outliers, df_g0_wo_outliers),
+    'df_d1 & df_d0': (df_d1_wo_outliers, df_d0_wo_outliers),
+    'df_m1 & df_m0': (df_m1_wo_outliers, df_m0_wo_outliers)
 }
 
 for alternative in ['two-sided', 'less', 'greater']:
