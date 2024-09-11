@@ -40,29 +40,42 @@ def ttest(df1, df2, fields , equal_var=False, alternative="two-sided"):
 
 # RUN t - TEST 
 # t-test for gender and screening time
-_,p_val = ttest(df_g0, df_g1, fields = ['total'])
+_,p_val = ttest(df_g1_wo_outliers, df_g0_wo_outliers, fields = ['total'], alternative = "two-sided")
+_,p_val = ttest(df_g1_wo_outliers, df_g0_wo_outliers, fields = ['total'], alternative = "greater")
+_,p_val = ttest(df_g1_wo_outliers, df_g0_wo_outliers, fields = ['total'], alternative = "less")
 
 
 # t-test for gender and wellbeing fields
-_,p_val = ttest(df_g0, df_g1,fields = wellbeing_fields)
+_,p_val = ttest(df_g1_wo_outliers, df_g0_wo_outliers,fields = wellbeing_fields, alternative = "two-sided")
+_,p_val = ttest(df_g1_wo_outliers, df_g0_wo_outliers,fields = wellbeing_fields, alternative = "greater")
+_,p_val = ttest(df_g1_wo_outliers, df_g0_wo_outliers,fields = wellbeing_fields, alternative = "less")
 
 
 # t-test for deprived and screening time
-_,p_val = ttest(df_d0, df_d1, fields = ['total'])
+_,p_val = ttest(df_d1_wo_outliers, df_d0_wo_outliers, fields = ['total'], alternative = "two-sided")
+_,p_val = ttest(df_d1_wo_outliers, df_d0_wo_outliers, fields = ['total'], alternative = "greater")
+_,p_val = ttest(df_d1_wo_outliers, df_d0_wo_outliers, fields = ['total'], alternative = "less")
 
 
 # t-test for deprived and wellbeing fields
-_,p_val = ttest(df_d0, df_d1, fields = wellbeing_fields)
+_,p_val = ttest(df_d1_wo_outliers, df_d0_wo_outliers, fields = wellbeing_fields, alternative = "two-sided")
+_,p_val = ttest(df_d1_wo_outliers, df_d0_wo_outliers, fields = wellbeing_fields, alternative = "greater")
+_,p_val = ttest(df_d1_wo_outliers, df_d0_wo_outliers, fields = wellbeing_fields, alternative = "less")
+
+
+# t-test for minority and screening time
+_,p_val = ttest(df_m1_wo_outliers, df_m0_wo_outliers, fields = ['total'], alternative = "two-sided")
+_,p_val = ttest(df_m1_wo_outliers, df_m0_wo_outliers, fields = ['total'], alternative = "greater")
+_,p_val = ttest(df_m1_wo_outliers, df_m0_wo_outliers, fields = ['total'], alternative = "less")
 
 
 # t-test for minority and each wellbeing fields
-_,p_val = ttest(df_m0, df_m1,fields = ['total'])
+_,p_val = ttest(df_m1_wo_outliers, df_m0_wo_outliers, fields = wellbeing_fields, alternative = "two-sided")
+_,p_val = ttest(df_m1_wo_outliers, df_m0_wo_outliers, fields = wellbeing_fields, alternative = "greater")
+_,p_val = ttest(df_m1_wo_outliers, df_m0_wo_outliers, fields = wellbeing_fields, alternative = "less")
 
 
-# t-test for minority and each wellbeing fields
-_,p_val = ttest(df_m0, df_m1,fields = wellbeing_fields)
-
-
-# t-test for screening time and wellbeing fields
-_,p_val = ttest(df_low_st,df_high_st , fields = wellbeing_fields)
-    
+# # t-test for screening time and wellbeing fields
+_,p_val = ttest(df_high_st,df_low_st, fields = wellbeing_fields, alternative = "two-sided")
+_,p_val = ttest(df_high_st,df_low_st, fields = wellbeing_fields, alternative = "greater")    
+_,p_val = ttest(df_high_st,df_low_st, fields = wellbeing_fields, alternative = "less")
