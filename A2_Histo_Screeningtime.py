@@ -10,6 +10,30 @@ print(df_m1 ['total'].describe())
 print(df_d0 ['total'].describe())
 print(df_d1 ['total'].describe())
 
+# Compute lower and higher fences specifically
+lower_fence_g0, higher_fence_g0 = compute_fences(df_g0['total'].to_numpy())
+lower_fence_g1, higher_fence_g1 = compute_fences(df_g1['total'].to_numpy())
+lower_fence_d0, higher_fence_d0 = compute_fences(df_d0['total'].to_numpy())
+lower_fence_d1, higher_fence_d1 = compute_fences(df_d1['total'].to_numpy())
+lower_fence_m0, higher_fence_m0 = compute_fences(df_m0['total'].to_numpy())
+lower_fence_m1, higher_fence_m1 = compute_fences(df_m1['total'].to_numpy())
+
+# Print the outliers
+print(lower_fence_g0)
+print(higher_fence_g0)
+print(lower_fence_g1)
+print(higher_fence_g1)
+
+print(lower_fence_d0)
+print(higher_fence_d0)
+print(lower_fence_d1)
+print(higher_fence_d1)
+
+print(lower_fence_m0)
+print(higher_fence_m0)
+print(lower_fence_m1)
+print(higher_fence_m1)
+
 
 def statistics(col: pd.Series, color, edgecolor, title, xlabel, ylabel, bin_width):
     sample = col.to_numpy()
@@ -48,4 +72,7 @@ statistics(df_d0 ['total'], 'darkblue', 'black',
 statistics(df_d1 ['total'], 'gray', 'black', 
            "Histogram of Total time on screen by deprivation (Otherwise)",
            "Time (in hours)", "Number of adolescent", 5)
+
+
+
 
