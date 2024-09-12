@@ -20,12 +20,12 @@ print('Mode', df_d0 ['total'].mode()[0])
 print('Mode', df_d1 ['total'].mode()[0])
 
 # Skewness
-print(skew(df_g0['total']))
-print(skew(df_g1['total']))
-print(skew(df_m0['total']))
-print(skew(df_m1['total']))
-print(skew(df_d0['total']))
-print(skew(df_d1['total']))
+print('Skewness', skew(df_g0['total']))
+print('Skewness', skew(df_g1['total']))
+print('Skewness', skew(df_m0['total']))
+print('Skewness', skew(df_m1['total']))
+print('Skewness', skew(df_d0['total']))
+print('Skewness', skew(df_d1['total']))
 
 # Compute lower and higher fences specifically
 lower_fence_g0, higher_fence_g0 = compute_fences(df_g0['total'].to_numpy())
