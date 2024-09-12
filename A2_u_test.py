@@ -22,7 +22,7 @@ dfs = {
     'df_m1 & df_m0': (df_m1_wo_outliers, df_m0_wo_outliers)
 }
 
-for alternative in ['two-sided', 'less', 'greater']:
+for alternative in ['less', 'greater']:
     for name, d in dfs.items():
         print(f'==================================================')
         for field in wellbeing_fields:
