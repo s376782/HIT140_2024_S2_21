@@ -36,6 +36,8 @@ df3['wellbeing-score'] = df3[wellbeing_fields].sum(axis=1)
 # Create new dataframe for all data by joining 3 datasets
 df = df3.join(df2, how='inner').join(df1, how='inner')
 
+# Remove invalid data
+df = df.loc[df['total'] <= 168]
 
 total_q1, total_q3 = np.percentile(df['total'].to_numpy(), [25, 75])
 lower_fence, higher_fence = compute_fences(df['total'].to_numpy())
