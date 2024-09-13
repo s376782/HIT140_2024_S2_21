@@ -12,7 +12,10 @@ https://www.youtube.com/watch?v=ovYsW3LbZx0
 
 ## Group 21 members: 
 Thuy Chi Tran - s374211
+
 Thi Loan (Anne) Trinh - s376966
+
 Tran Bao Minh Vu - s376782
+
 
 Thank you!
