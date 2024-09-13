@@ -18,8 +18,8 @@ def calculate_ci(col: pd.Series, confidence: float = 0.95):
     return ds.tconfint_mean(sig_lvl)
 
 dfs = {
-    'df_high_st': df_high_st,
-    'df_low_st': df_low_st,
+    # 'df_high_st': df_high_st,
+    # 'df_low_st': df_low_st,
     'df_g1': df_g1,
     'df_g0': df_g0,
     'df_d1': df_d1,
@@ -28,7 +28,7 @@ dfs = {
     'df_m0': df_m0
 }
 
-fields = wellbeing_fields + ['total']
+fields = ['total']   #wellbeing_fields +
 
 for name, d in dfs.items():
     print(f'==================================================')
