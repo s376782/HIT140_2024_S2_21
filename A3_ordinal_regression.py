@@ -4,7 +4,7 @@ import scipy.stats as stats
 import statsmodels.api as sm
 from statsmodels.miscmodels.ordinal_model import OrderedModel
 from sklearn.model_selection import train_test_split
-from A2_datawrangling import *
+from A3_datawrangling import *
 
 for wellbeing_field in wellbeing_fields:
     print('======', wellbeing_field, '======')

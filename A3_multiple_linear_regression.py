@@ -1,18 +1,16 @@
 import pandas as pd
 import math
-import pathlib
-import matplotlib.pyplot as plt
 
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
 from sklearn import metrics
 
-from A2_datawrangling import *
+from A3_datawrangling import *
 
 for wellbeing_field in wellbeing_fields:
     print('======', wellbeing_field, '======')
 
-    df_f = df[['total', wellbeing_field]]
+    df_f = df[['total', 'gender', 'minority', 'deprived', wellbeing_field]]
 
     # Separate explanatory variables (x) from the response variable (y)
     X = df_f.iloc[:,:-1].values
@@ -64,11 +62,7 @@ for wellbeing_field in wellbeing_fields:
     print("R^2: ", r_2)
 
     print(f'{wellbeing_field} = {model.intercept_:.4f}' +
-          f'{" + " if model.coef_[0] >= 0 else " - "} {abs(model.coef_[0]):.4f}(Total Screen Time)')
-    
-    plt.scatter(df_f['total'], df_f[wellbeing_field])
-    plt.xlabel("Total screen time")
-    plt.ylabel(wellbeing_field)
-    pathlib.Path('output/simple_linear_regression').mkdir(parents=True, exist_ok=True) 
-    plt.savefig(f'output/simple_linear_regression/{wellbeing_field}.png')
-    plt.clf()
+          f'{" + " if model.coef_[0] >= 0 else " - "} {abs(model.coef_[0]):.4f}(Total Screen Time)' +
+          f'{" + " if model.coef_[1] >= 0 else " - "} {abs(model.coef_[1]):.4f}(gender)' +
+          f'{" + " if model.coef_[2] >= 0 else " - "} {abs(model.coef_[2]):.4f}(minority)' +
+          f'{" + " if model.coef_[3] >= 0 else " - "} {abs(model.coef_[3]):.4f}(deprived)')
