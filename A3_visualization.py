@@ -1,8 +1,10 @@
 import seaborn as sns
-import matplotlib.pyplot as plt
 import pathlib
 
 from A3_datawrangling import *
+
+pathlib.Path('output/correlation/').mkdir(parents=True, exist_ok=True) 
+pathlib.Path('output/scatter/').mkdir(parents=True, exist_ok=True) 
 
 # compute the correlation matrix
 for wellbeing_field in wellbeing_fields:
@@ -19,6 +21,8 @@ for wellbeing_field in wellbeing_fields:
         annot=True
     )
 
+    ax.figure.set_size_inches(12, 8)
+
     # customise the labels
     ax.set_xticklabels(
         ax.get_xticklabels(),
@@ -26,16 +30,11 @@ for wellbeing_field in wellbeing_fields:
         horizontalalignment='right'
     )
 
-    pathlib.Path('output/correlation/').mkdir(parents=True, exist_ok=True) 
-    plt.savefig(f'output/correlation/{wellbeing_field}.png')
-    plt.clf()
-
+    ax.figure.savefig(f'output/correlation/{wellbeing_field}.png')
+    ax.figure.clf()
+    
     X_cols = df.iloc[:,:-1].columns.values
     for col in X_cols:
-        plt.scatter(x=df[col], y=df[wellbeing_field])
-        plt.xlabel(col)
-        plt.ylabel(wellbeing_field)
-
-        pathlib.Path(f'output/scatter/{wellbeing_field}').mkdir(parents=True, exist_ok=True) 
-        plt.savefig(f'output/scatter/{wellbeing_field}/{col}.png')
-        plt.clf()
+        scatter = sns.scatterplot(df, x=col, y=wellbeing_field)
+        scatter.figure.savefig(f'output/scatter/{wellbeing_field}-{col}.png')
+        scatter.figure.clf()
