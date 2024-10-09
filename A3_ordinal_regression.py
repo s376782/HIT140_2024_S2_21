@@ -1,18 +1,19 @@
 import numpy as np
-import pandas as pd
-import scipy.stats as stats
-import statsmodels.api as sm
+
 from statsmodels.miscmodels.ordinal_model import OrderedModel
 from sklearn.model_selection import train_test_split
+
 from A3_datawrangling import *
 
 for wellbeing_field in wellbeing_fields:
     print('======', wellbeing_field, '======')
 
-    df_f = df[['total', 'gender', 'minority', 'deprived', wellbeing_field]]
+    df = getDataFrame(wellbeing_field, False)
+
+    #df = df[['total', 'gender', 'minority', 'deprived', wellbeing_field]]
     # Separate explanatory variables (x) from the response variable (y)
-    X = df_f.iloc[:,:-1].values
-    y = df_f.iloc[:,-1].values
+    X = df.iloc[:,:-1]
+    y = df.iloc[:,-1]
 
     # Split dataset into 60% training and 40% test sets 
     # Note: other % split can be used.

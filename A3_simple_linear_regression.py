@@ -1,5 +1,4 @@
 import pandas as pd
-import math
 import pathlib
 import matplotlib.pyplot as plt
 
@@ -12,11 +11,11 @@ from A3_datawrangling import *
 for wellbeing_field in wellbeing_fields:
     print('======', wellbeing_field, '======')
 
-    df_f = df[['total', wellbeing_field]]
+    df = getDataFrame(wellbeing_field)[['total', wellbeing_field]]
 
     # Separate explanatory variables (x) from the response variable (y)
-    X = df_f.iloc[:,:-1].values
-    y = df_f.iloc[:,-1].values
+    X = df.iloc[:,:-1].values
+    y = df.iloc[:,-1].values
 
     # Split dataset into 60% training and 40% test sets 
     # Note: other % split can be used.
@@ -45,9 +44,9 @@ for wellbeing_field in wellbeing_fields:
     # Mean Absolute Error
     mae = metrics.mean_absolute_error(y_test, y_pred)
     # Mean Squared Error
-    mse = metrics.mean_squared_error(y_test, y_pred)
+    mse =  metrics.mean_squared_error(y_test, y_pred)
     # Root Mean Square Error
-    rmse =  math.sqrt(metrics.mean_squared_error(y_test, y_pred))
+    rmse = metrics.root_mean_squared_error(y_test, y_pred)
     # Normalised Root Mean Square Error
     y_max = y.max()
     y_min = y.min()
@@ -66,7 +65,7 @@ for wellbeing_field in wellbeing_fields:
     print(f'{wellbeing_field} = {model.intercept_:.4f}' +
           f'{" + " if model.coef_[0] >= 0 else " - "} {abs(model.coef_[0]):.4f}(Total Screen Time)')
     
-    plt.scatter(df_f['total'], df_f[wellbeing_field])
+    plt.scatter(df['total'], df[wellbeing_field])
     plt.xlabel("Total screen time")
     plt.ylabel(wellbeing_field)
     pathlib.Path('output/simple_linear_regression').mkdir(parents=True, exist_ok=True) 

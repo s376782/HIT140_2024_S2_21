@@ -1,21 +1,5 @@
 # Import Python library
 import pandas as pd
-import numpy as np
-
-def compute_fences(samples):
-    # Compute quartile1(25%) and quartile3(75%) for total screening time per week
-    q1, q3 = np.percentile(samples, [25, 75])
-
-    # Compute IQR and fence to indentify outliers
-    iqr = q3 - q1 #Compute IQR
-    lower_fence = q1 - (1.5*iqr)
-    higher_fence = q3 + (1.5*iqr)
-
-    return lower_fence, higher_fence
-
-def remove_outliers(df, field):
-    lower_fence, higher_fence = compute_fences(df[field].to_numpy())
-    return df.loc[df[field] > lower_fence].loc[df[field] < higher_fence]
 
 # Read 3 datasets and set index for ID in each dataset
 df1 = pd.read_csv('data/dataset1.csv').set_index(['ID'])
@@ -23,46 +7,20 @@ df2 = pd.read_csv('data/dataset2.csv').set_index(['ID'])
 df3 = pd.read_csv('data/dataset3.csv').set_index(['ID'])
 
 # Insert all variable names of well-being into an array
-wellbeing_fields = ['Optm','Usef','Relx','Intp','Engs','Dealpr','Thcklr','Goodme','Clsep','Conf','Mkmind','Loved','Intthg','Cheer']
+wellbeing_fields = df3.columns.values
 
-# Compute total screening time per week
-df2['total_we'] = df2['C_we']*5 + df2['G_we']*5 + df2['S_we']*5 + df2['T_we']*5
-df2['total_wk'] = df2['C_wk']*2 + df2['G_wk']*2 + df2['S_wk']*2 + df2['T_wk']*2
-df2['total'] = df2['total_we'] + df2['total_wk']
+def getDataFrame(wellbeing_field, total = True):
+    global df1, df2, df3
 
-# Compute total well being score
-df3['wellbeing-score'] = df3[wellbeing_fields].sum(axis=1)
+    if total:
+        # Compute total screening time per week
+        df2['total'] = df2['C_we']*5 + df2['G_we']*5 + df2['S_we']*5 + df2['T_we']*5 + df2['C_wk']*2 + df2['G_wk']*2 + df2['S_wk']*2 + df2['T_wk']*2
 
-# Create new dataframe for all data by joining 3 datasets
-df = df3.join(df2, how='inner').join(df1, how='inner')
+        # Remove invalid data
+        df2 = df2.loc[df2['total'] <= 168]
 
-# Remove invalid data
-df = df.loc[df['total'] <= 168]
+    # Compute total well being score
+    #df3['wellbeing-score'] = df3[wellbeing_fields].sum(axis=1)
 
-total_q1, total_q3 = np.percentile(df['total'].to_numpy(), [25, 75])
-lower_fence, higher_fence = compute_fences(df['total'].to_numpy())
-
-# Screening time group
-# Low screening time group: include all people have total screening time per week lower than value of lower fence
-df_low_st = df.loc[df['total'] < total_q1].loc[df['total'] > lower_fence]
-# High screening time group: include all people have total screening time per week higher than value of higher fence
-df_high_st = df.loc[df['total'] > total_q3].loc[df['total'] < higher_fence]
-
-# Create new dataframe follow condition of groups
-# Gender groups
-df_g0 = df.loc[df['gender'] == 0] #group for otherwise gender
-df_g1 = df.loc[df['gender'] == 1] #group for male
-df_g0_wo_outliers = remove_outliers(df_g0, 'total')
-df_g1_wo_outliers = remove_outliers(df_g1, 'total')
-
-# Minority group
-df_m0 = df.loc[df['minority'] == 0] #group for the majority ethnic group of the country
-df_m1 = df.loc[df['minority'] == 1] #group for otherwise minority group
-df_m0_wo_outliers = remove_outliers(df_m0, 'total')
-df_m1_wo_outliers = remove_outliers(df_m1, 'total')
-
-# Deprivation group
-df_d1 = df.loc[df['deprived'] == 1] #group with high deprivation indices with high scores on unemployment, crime, poor public services, and barriers to housing
-df_d0 = df.loc[df['deprived'] == 0] #group for otherwise
-df_d1_wo_outliers = remove_outliers(df_d1, 'total')
-df_d0_wo_outliers = remove_outliers(df_d0, 'total')
+    # Create new dataframe for all data by joining 3 datasets
+    return df1.join(df2, how='inner').join(df3[[wellbeing_field]], how='inner')
