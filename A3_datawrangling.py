@@ -18,9 +18,18 @@ def getDataFrame(wellbeing_field, total = True):
 
         # Remove invalid data
         df2 = df2.loc[df2['total'] <= 168]
+        
+        # Filter out the outliers
+        Q1 = df2['total'].quantile(0.25)
+        Q3 = df2['total'].quantile(0.75)
+        IQR = Q3 - Q1
+        lower_bound = Q1 - 1.5 * IQR
+        upper_bound = Q3 + 1.5 * IQR
+        df2 = df2[(df2['total'] >= lower_bound) & (df2['total'] <= upper_bound)]
+
 
     # Compute total well being score
-    #df3['wellbeing-score'] = df3[wellbeing_fields].sum(axis=1)
+    df3['wellbeing-score'] = df3[wellbeing_fields].sum(axis=1)
 
     # Create new dataframe for all data by joining 3 datasets
     return df1.join(df2, how='inner').join(df3[[wellbeing_field]], how='inner')
