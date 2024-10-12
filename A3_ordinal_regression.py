@@ -7,9 +7,8 @@ from A3_datawrangling import *
 for wellbeing_field in wellbeing_fields:
     print('======', wellbeing_field, '======')
 
-    df = getDataFrame(wellbeing_field, False)
+    df = getDataFrame(wellbeing_field, True)
 
-    #df = df[['total', 'gender', 'minority', 'deprived', wellbeing_field]]
     # Separate explanatory variables (x) from the response variable (y)
     X = df.iloc[:,:-1]
     y = df.iloc[:,-1]
