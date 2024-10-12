@@ -1,5 +1,4 @@
 import numpy as np
-
 from statsmodels.miscmodels.ordinal_model import OrderedModel
 from sklearn.model_selection import train_test_split
 
@@ -30,19 +29,19 @@ for wellbeing_field in wellbeing_fields:
     
     # Show the summary of the model
     print(result.summary())
-
-    # Evaluate fitness with log-likelihood
-    log_likelihood = result.llf
-    print(f"Log-Likelihood: {log_likelihood}")
-    
+ 
+ 
+    # Pearson Chi-Square Test
     # Predict probabilities for each category
     y_pred_prob = result.model.predict(result.params, exog=X_test)
-    
     # Convert predicted probabilities to the most likely category
     y_pred = np.argmax(y_pred_prob, axis=1)
-    
-    # Goodness-of-Fit Tests
-    # Pearson Chi-Square Test
     pearson_chi2 = np.sum((y_test - y_pred) ** 2 / y_pred)
     print(f"Pearson Chi-Square: {pearson_chi2}")
 
+
+    # McFadden's Pseudo R-squared
+    LL_full = result.llf
+    LL_null = result.llnull
+    pseudo_r2 = 1 - (LL_full / LL_null)
+    print(f"McFadden's Pseudo R-squared: {pseudo_r2}")
