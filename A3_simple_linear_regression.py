@@ -8,16 +8,20 @@ from sklearn import metrics
 from A3_datawrangling import *
 
 
-def linear_regression_analysis(df, wellbeing_fields, group_column, group_value):
+def linear_regression_analysis(wellbeing_fields, group_column, group_value):
     for wellbeing_field in wellbeing_fields:
+        df = getDataFrame(wellbeing_field, True, True)
+
         print('======', group_column, group_value, wellbeing_field, '======')
         
+        df = df[df[group_column] == group_value]
+
         # Select relevant columns
-        df_subset = df[['total-time', wellbeing_field]]
+        df = df[['total-time', wellbeing_field]]
 
         # Separate explanatory variables (X) from the response variable (y)
-        X = df_subset.iloc[:, :-1].values
-        y = df_subset.iloc[:, -1].values
+        X = df.iloc[:, :-1].values
+        y = df.iloc[:, -1].values
 
         # Split dataset into 60% training and 40% test sets
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.4, random_state=0)
@@ -32,7 +36,7 @@ def linear_regression_analysis(df, wellbeing_fields, group_column, group_value):
         # Compute standard performance metrics
         mae = metrics.mean_absolute_error(y_test, y_pred)
         mse = metrics.mean_squared_error(y_test, y_pred)
-        rmse = metrics.mean_squared_error(y_test, y_pred, squared=False)  # RMSE
+        rmse = metrics.root_mean_squared_error(y_test, y_pred)  # RMSE
         y_max = y.max()
         y_min = y.min()
         rmse_norm = rmse / (y_max - y_min)  # Normalized RMSE
@@ -51,7 +55,7 @@ def linear_regression_analysis(df, wellbeing_fields, group_column, group_value):
               f'{" + " if model.coef_[0] >= 0 else " - "} {abs(model.coef_[0]):.4f}(Total Screen Time)')
 
         # Create scatter plot
-        plt.scatter(df_subset['total-time'], df_subset[wellbeing_field])
+        plt.scatter(df['total-time'], df[wellbeing_field])
         plt.xlabel("Total screen time")
         plt.ylabel(wellbeing_field)
         plt.title(f'{wellbeing_field} VS Total screening time ({group_column} = {group_value})')
@@ -64,17 +68,14 @@ def linear_regression_analysis(df, wellbeing_fields, group_column, group_value):
 
 # Define group settings for analysis
 groups = [
-    ('minority', 0, df_no_specific_time[df_no_specific_time['minority'] == 0]),
-    ('minority', 1, df_no_specific_time[df_no_specific_time['minority'] == 1]),
-    ('gender', 0, df_no_specific_time[df_no_specific_time['gender'] == 0]),
-    ('gender', 1, df_no_specific_time[df_no_specific_time['gender'] == 1]),
-    ('deprived', 0, df_no_specific_time[df_no_specific_time['deprived'] == 0]),
-    ('deprived', 1, df_no_specific_time[df_no_specific_time['deprived'] == 1])
+    ('minority', 0),
+    ('minority', 1),
+    ('gender', 0),
+    ('gender', 1),
+    ('deprived', 0),
+    ('deprived', 1)
 ]
 
 # Loop through groups and perform regression analysis
-for group_column, group_value, group_df in groups:
-    if group_df.empty:
-        print(f"No data available for {group_column} = {group_value}. Skipping...")
-        continue
-    linear_regression_analysis(group_df.drop(group_column, axis=1), wellbeing_fields_with_total, group_column, group_value)
+for group_column, group_value in groups:
+    linear_regression_analysis(wellbeing_fields_with_total, group_column, group_value)
