@@ -5,7 +5,7 @@ from sklearn.preprocessing import StandardScaler, PowerTransformer
 
 from A3_datawrangling import *
 
-def linearRegression(df: DataFrame, prefix = 'Normal', fit_transform = False, zscore_standardisation = False):
+def linearRegression(df: DataFrame, prefix = 'Normal', fit_transform = False, zscore_standardisation = False, detail = False):
     # Separate explanatory variables (X) from the response variable (y)
     X = df.iloc[:,:-1]
     y = df.iloc[:,-1]
@@ -23,12 +23,22 @@ def linearRegression(df: DataFrame, prefix = 'Normal', fit_transform = False, zs
     # build the linear regression using statsmodels
     X = sm.add_constant(X)
     model = sm.OLS(y, X).fit()
-    print(prefix, y.name, model.rsquared, model.rsquared_adj)
+    if detail:
+        print(prefix, y.name)
+        print(model.summary())
+    else:
+        print(prefix, y.name, model.rsquared, model.rsquared_adj)
 
-for wellbeing_field in wellbeing_fields:
-    df = getDataFrame(wellbeing_field)
+for wellbeing_field in wellbeing_fields_with_total:
+    df = getDataFrame(wellbeing_field, False)
+    linearRegression(df, detail=True)
 
-    linearRegression(df)
+for wellbeing_field in wellbeing_fields_with_total:
+    df = getDataFrame(wellbeing_field, True)
+    linearRegression(df, detail=True)
+
+for wellbeing_field in wellbeing_fields_with_total:
+    df = getDataFrame(wellbeing_field, True)
 
     # Optimisation #1: Non-linear transformation
     for variable in df.iloc[:,:-1].columns.values:
