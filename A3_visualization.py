@@ -10,8 +10,10 @@ pathlib.Path('output/scatter/').mkdir(parents=True, exist_ok=True)
 for wellbeing_field in wellbeing_fields:
     df = getDataFrame(wellbeing_field, False)
     X_cols = df.iloc[:,:-1].columns.values
+    print(X_cols)
     for col in X_cols:
         scatter = sns.scatterplot(df, x=col, y =wellbeing_field)
+        scatter.set_title(f'Scatter Plot: {wellbeing_field} vs {col}')
         scatter.figure.savefig(f'output/scatter/{wellbeing_field}-{col}.png')
         scatter.figure.clf()
 
