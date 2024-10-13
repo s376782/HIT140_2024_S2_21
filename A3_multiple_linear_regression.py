@@ -27,15 +27,15 @@ def linearRegression(df: DataFrame, prefix = 'Normal', fit_transform = False, zs
         print(prefix, y.name)
         print(model.summary())
     else:
-        print(prefix, y.name, model.rsquared, model.rsquared_adj)
+        print(f'{prefix}, {y.name}, {model.rsquared}, {model.rsquared_adj}')
 
-for wellbeing_field in wellbeing_fields_with_total:
-    df = getDataFrame(wellbeing_field, False)
-    linearRegression(df, detail=True)
+# for wellbeing_field in wellbeing_fields_with_total:
+#     df = getDataFrame(wellbeing_field, False)
+#     linearRegression(df, detail=True)
 
-for wellbeing_field in wellbeing_fields_with_total:
-    df = getDataFrame(wellbeing_field, True)
-    linearRegression(df, detail=True)
+# for wellbeing_field in wellbeing_fields_with_total:
+#     df = getDataFrame(wellbeing_field, True)
+#     linearRegression(df, detail=True)
 
 for wellbeing_field in wellbeing_fields_with_total:
     df = getDataFrame(wellbeing_field, True)
@@ -45,33 +45,33 @@ for wellbeing_field in wellbeing_fields_with_total:
         # Log
         df_c = df.copy()
         df_c[variable] = df_c[variable].apply(lambda x: np.log(x) if x != 0 else 0)
-        linearRegression(df_c, 'Non-linear transformation (Log)')
+        linearRegression(df_c, f'Non-linear transformation (Log) - {variable}')
 
         # Exponential
         df_c = df.copy()
         df_c[variable] = df_c[variable].apply(np.exp)
-        linearRegression(df_c, 'Non-linear transformation (Exponential)')
+        linearRegression(df_c, f'Non-linear transformation (Exponential) - {variable}')
 
         # Quandratic
         df_c = df.copy()
         df_c[variable] = df_c[variable].apply(lambda x: x**2)
-        linearRegression(df_c, 'Non-linear transformation (Quandratic)')
+        linearRegression(df_c, f'Non-linear transformation (Quandratic) - {variable}')
 
         # Reciprocal
         df_c = df.copy()
         df_c[variable] = df_c[variable].apply(lambda x: 1/x if x != 0 else 0)
-        linearRegression(df_c, 'Non-linear transformation (Reciprocal)')
+        linearRegression(df_c, f'Non-linear transformation (Reciprocal) - {variable}')
 
-    # Optimisation #2: Remove multicollinearity
-    linearRegression(df.drop(['C_we'], axis=1), 'Remove multicollinearity (C_we)')
-    linearRegression(df.drop(['C_wk'], axis=1), 'Remove multicollinearity (C_wk)')
-    linearRegression(df.drop(['S_we'], axis=1), 'Remove multicollinearity (S_we)')
-    linearRegression(df.drop(['S_wk'], axis=1), 'Remove multicollinearity (S_wk)')
-    linearRegression(df.drop(['T_we'], axis=1), 'Remove multicollinearity (T_we)')
-    linearRegression(df.drop(['T_wk'], axis=1), 'Remove multicollinearity (T_wk)')
+    # # Optimisation #2: Remove multicollinearity
+    # linearRegression(df.drop(['C_we'], axis=1), 'Remove multicollinearity (C_we)')
+    # linearRegression(df.drop(['C_wk'], axis=1), 'Remove multicollinearity (C_wk)')
+    # linearRegression(df.drop(['S_we'], axis=1), 'Remove multicollinearity (S_we)')
+    # linearRegression(df.drop(['S_wk'], axis=1), 'Remove multicollinearity (S_wk)')
+    # linearRegression(df.drop(['T_we'], axis=1), 'Remove multicollinearity (T_we)')
+    # linearRegression(df.drop(['T_wk'], axis=1), 'Remove multicollinearity (T_wk)')
 
-    # Optimisation #3: Rescale the explanatory variables
-    linearRegression(df, 'Rescale the explanatory variables', fit_transform=True)
+    # # Optimisation #3: Rescale the explanatory variables
+    # linearRegression(df, 'Rescale the explanatory variables', fit_transform=True)
 
-    # Optimisation #4: Gaussian transformation
-    linearRegression(df, 'Gaussian transformation', zscore_standardisation=True)
+    # # Optimisation #4: Gaussian transformation
+    # linearRegression(df, 'Gaussian transformation', zscore_standardisation=True)
