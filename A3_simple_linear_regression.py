@@ -54,7 +54,7 @@ def linear_regression_analysis(df, wellbeing_fields, group_column, group_value):
         plt.scatter(df_subset['total-time'], df_subset[wellbeing_field])
         plt.xlabel("Total screen time")
         plt.ylabel(wellbeing_field)
-
+        plt.title(f'{wellbeing_field} VS Total screening time ({group_column} = {group_value})')
         # Create output directory and save plot
         output_directory = pathlib.Path(f'output/simple_linear_regression/{group_column}{group_value}')
         output_directory.mkdir(parents=True, exist_ok=True)  
