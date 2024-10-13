@@ -54,3 +54,31 @@ def getDataFrame(wellbeing_field, include_dataset1 = False, include_total_time =
     df = df.join(df3[[wellbeing_field]], how='inner')
     
     return df
+
+
+def getFullDataFrame(include_dataset1=False, include_total_time=False):
+    global df1, df2, df3
+
+    # Start with df2 as the base DataFrame
+    df = df2
+    
+    # Join with df1 if specified
+    if include_dataset1:
+        df = df1.join(df, how='inner')
+    
+    # Join with df2Total if specified
+    if include_total_time:
+        df = df.join(df2Total, how='inner')
+    
+    # Join with df3 (all well-being fields and total-score)
+    df = df.join(df3, how='inner')
+    
+    return df
+
+df_full = getFullDataFrame(include_dataset1 = True, include_total_time = True)
+# print(df_full)
+
+
+# Dataframe without specific time on screen 
+df_no_specific_time = df_full.drop(['C_we', 'C_wk', 'G_we', 'G_wk', 'S_we', 'S_wk', 'T_we', 'T_wk'], axis=1)
+# print(df_no_specific_time)
