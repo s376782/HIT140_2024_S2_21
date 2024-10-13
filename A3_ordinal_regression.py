@@ -4,7 +4,7 @@ from sklearn.model_selection import train_test_split
 
 from A3_datawrangling import *
 
-for wellbeing_field in wellbeing_fields_with_total:
+for wellbeing_field in wellbeing_fields:
     print('======', wellbeing_field, '======')
 
     df = getDataFrame(wellbeing_field, True)
