@@ -11,7 +11,7 @@ from A3_datawrangling import *
 for wellbeing_field in wellbeing_fields:
     print('======', wellbeing_field, '======')
 
-    df = getDataFrame(wellbeing_field)[['total', wellbeing_field]]
+    df = getDataFrame(wellbeing_field)[['total-time', wellbeing_field]]
 
     # Separate explanatory variables (x) from the response variable (y)
     X = df.iloc[:,:-1].values
@@ -65,7 +65,7 @@ for wellbeing_field in wellbeing_fields:
     print(f'{wellbeing_field} = {model.intercept_:.4f}' +
           f'{" + " if model.coef_[0] >= 0 else " - "} {abs(model.coef_[0]):.4f}(Total Screen Time)')
     
-    plt.scatter(df['total'], df[wellbeing_field])
+    plt.scatter(df['total-time'], df[wellbeing_field])
     plt.xlabel("Total screen time")
     plt.ylabel(wellbeing_field)
     pathlib.Path('output/simple_linear_regression').mkdir(parents=True, exist_ok=True) 
