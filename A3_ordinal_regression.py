@@ -1,3 +1,4 @@
+#code to run this file to save all result into an excel file:python A3_ordinal_linear_regression.py > result.txt
 import numpy as np
 from statsmodels.miscmodels.ordinal_model import OrderedModel
 from sklearn.model_selection import train_test_split
